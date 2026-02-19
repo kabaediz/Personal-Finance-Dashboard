@@ -1,6 +1,6 @@
 # Personal Finance Dashboard
 
-Ein modernes, interaktives Dashboard zur Verwaltung persönlicher Finanzen, entwickelt als Portfolio-Projekt für Wirtschaftsinformatik-Studenten.
+Ein modernes, interaktives Dashboard zur Verwaltung persönlicher Finanzen
 
 ![Dashboard Preview](https://img.shields.io/badge/Status-Ready-success)
 ![License](https://img.shields.io/badge/License-MIT-blue)
