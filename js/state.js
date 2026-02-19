@@ -1,8 +1,3 @@
-/**
- * State Management Module
- * Manages the application state including expenses data and filters
- */
-
 class State {
     constructor() {
         this.expenses = [];
@@ -199,6 +194,5 @@ class State {
     }
 }
 
-// Create and export singleton instance
 const state = new State();
 export default state;

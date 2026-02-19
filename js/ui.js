@@ -1,28 +1,17 @@
-/**
- * UI Module
- * Handles DOM manipulation and UI updates
- */
-
 import state from './state.js';
 import { exportToCSV, downloadFile, saveToLocalStorage } from './api.js';
 
-/**
- * Initialize UI event listeners
- */
 export function initUI() {
-    // Expense form submission
     const expenseForm = document.getElementById('expense-form');
     if (expenseForm) {
         expenseForm.addEventListener('submit', handleExpenseSubmit);
         
-        // Set today's date as default
         const dateInput = document.getElementById('expense-date');
         if (dateInput) {
             dateInput.valueAsDate = new Date();
         }
     }
 
-    // Filter controls
     const periodSelect = document.getElementById('period-select');
     if (periodSelect) {
         periodSelect.addEventListener('change', handlePeriodChange);
@@ -33,25 +22,18 @@ export function initUI() {
         applyFilterBtn.addEventListener('click', handleApplyFilter);
     }
 
-    // CSV export
     const exportBtn = document.getElementById('export-csv');
     if (exportBtn) {
         exportBtn.addEventListener('click', handleExportCSV);
     }
 
-    // Subscribe to state changes
     state.subscribe(() => {
         updateStatistics();
         updateExpensesTable();
-        // Save to localStorage whenever state changes
         saveToLocalStorage(state.getAllExpenses());
     });
 }
 
-/**
- * Handle expense form submission
- * @param {Event} e - Submit event
- */
 function handleExpenseSubmit(e) {
     e.preventDefault();
 
@@ -60,7 +42,6 @@ function handleExpenseSubmit(e) {
     const category = document.getElementById('expense-category').value;
     const date = document.getElementById('expense-date').value;
 
-    // Add expense to state
     state.addExpense({
         description,
         amount: parseFloat(amount),
@@ -68,20 +49,12 @@ function handleExpenseSubmit(e) {
         date
     });
 
-    // Reset form
     e.target.reset();
-    
-    // Set date back to today
     document.getElementById('expense-date').valueAsDate = new Date();
 
-    // Show success message
     showToast('Ausgabe erfolgreich hinzugefügt!', 'success');
 }
 
-/**
- * Handle period selection change
- * @param {Event} e - Change event
- */
 function handlePeriodChange(e) {
     const period = e.target.value;
     const customDateRange = document.getElementById('custom-date-range');
@@ -90,14 +63,10 @@ function handlePeriodChange(e) {
         customDateRange.classList.remove('hidden');
     } else {
         customDateRange.classList.add('hidden');
-        // Apply filter immediately for predefined periods
         state.updateFilter({ period });
     }
 }
 
-/**
- * Handle apply filter button click
- */
 function handleApplyFilter() {
     const period = document.getElementById('period-select').value;
     
@@ -123,9 +92,6 @@ function handleApplyFilter() {
     showToast('Filter angewendet', 'success');
 }
 
-/**
- * Handle CSV export
- */
 function handleExportCSV() {
     const expenses = state.getFilteredExpenses();
     
@@ -141,9 +107,6 @@ function handleExportCSV() {
     showToast('CSV-Export erfolgreich!', 'success');
 }
 
-/**
- * Update statistics display
- */
 export function updateStatistics() {
     const stats = state.getStatistics();
 
@@ -164,16 +127,12 @@ export function updateStatistics() {
     }
 }
 
-/**
- * Update expenses table
- */
 export function updateExpensesTable() {
     const tbody = document.getElementById('expenses-table-body');
     if (!tbody) return;
 
     const expenses = state.getFilteredExpenses();
 
-    // Clear existing rows
     tbody.innerHTML = '';
 
     if (expenses.length === 0) {
@@ -191,27 +150,19 @@ export function updateExpensesTable() {
         return;
     }
 
-    // Sort by date (newest first)
     const sortedExpenses = [...expenses].sort((a, b) => 
         new Date(b.date) - new Date(a.date)
     );
 
-    // Create table rows
     sortedExpenses.forEach(expense => {
         const row = createExpenseRow(expense);
         tbody.appendChild(row);
     });
 }
 
-/**
- * Create a table row for an expense
- * @param {Object} expense - Expense object
- * @returns {HTMLElement} Table row element
- */
 function createExpenseRow(expense) {
     const tr = document.createElement('tr');
     
-    // Format date
     const date = new Date(expense.date);
     const formattedDate = date.toLocaleDateString('de-DE', {
         day: '2-digit',
@@ -219,7 +170,6 @@ function createExpenseRow(expense) {
         year: 'numeric'
     });
 
-    // Get category color
     const categoryColors = {
         'Lebensmittel': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
         'Miete': 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
@@ -254,17 +204,12 @@ function createExpenseRow(expense) {
         </td>
     `;
 
-    // Add delete button event listener
     const deleteBtn = tr.querySelector('.delete-btn');
     deleteBtn.addEventListener('click', () => handleDeleteExpense(expense.id));
 
     return tr;
 }
 
-/**
- * Handle expense deletion
- * @param {number} id - Expense ID to delete
- */
 function handleDeleteExpense(id) {
     if (confirm('Möchten Sie diese Ausgabe wirklich löschen?')) {
         state.deleteExpense(id);
@@ -272,11 +217,6 @@ function handleDeleteExpense(id) {
     }
 }
 
-/**
- * Show toast notification
- * @param {string} message - Message to display
- * @param {string} type - Type of toast ('success' or 'error')
- */
 export function showToast(message, type = 'success') {
     const toast = document.createElement('div');
     toast.className = `toast ${type === 'error' ? 'error' : ''}`;
@@ -287,7 +227,6 @@ export function showToast(message, type = 'success') {
 
     document.body.appendChild(toast);
 
-    // Remove toast after 3 seconds
     setTimeout(() => {
         toast.style.opacity = '0';
         setTimeout(() => {
