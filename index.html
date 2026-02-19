@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Personal Finance Dashboard - Verwalten Sie Ihre Ausgaben effizient">
+    <title>Personal Finance Dashboard</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
+    
+    <!-- Navigation Bar -->
+    <nav class="bg-white dark:bg-gray-800 shadow-lg transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <i class="fas fa-chart-line text-blue-600 text-2xl mr-3"></i>
+                    <span class="text-xl font-bold text-gray-800 dark:text-white">Finance Dashboard</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="index.html" class="nav-link active" id="nav-dashboard">
+                        <i class="fas fa-home mr-1"></i> Dashboard
+                    </a>
+                    <a href="about.html" class="nav-link" id="nav-about">
+                        <i class="fas fa-info-circle mr-1"></i> Info
+                    </a>
+                    <button id="theme-toggle" class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors" aria-label="Toggle Dark Mode">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:inline"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Header Section -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Finanzübersicht</h1>
+            <p class="text-gray-600 dark:text-gray-400">Verwalten und analysieren Sie Ihre Ausgaben</p>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8 transition-colors duration-300">
+            <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">
+                <i class="fas fa-filter mr-2"></i>Zeitraum-Filter
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                    <label for="period-select" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Zeitraum</label>
+                    <select id="period-select" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white">
+                        <option value="current-month">Aktueller Monat</option>
+                        <option value="last-month">Letzter Monat</option>
+                        <option value="current-quarter">Aktuelles Quartal</option>
+                        <option value="last-quarter">Letztes Quartal</option>
+                        <option value="current-year">Aktuelles Jahr</option>
+                        <option value="custom">Benutzerdefiniert</option>
+                    </select>
+                </div>
+                <div id="custom-date-range" class="hidden md:col-span-2 grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="start-date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Von</label>
+                        <input type="date" id="start-date" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white">
+                    </div>
+                    <div>
+                        <label for="end-date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Bis</label>
+                        <input type="date" id="end-date" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white">
+                    </div>
+                </div>
+                <div class="flex items-end">
+                    <button id="apply-filter" class="w-full px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-check mr-2"></i>Anwenden
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="stats-card">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">Gesamtausgaben</p>
+                        <p class="text-2xl font-bold text-gray-900 dark:text-white" id="total-expenses">€0.00</p>
+                    </div>
+                    <div class="stats-icon bg-red-100 dark:bg-red-900">
+                        <i class="fas fa-wallet text-red-600 dark:text-red-400"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="stats-card">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">Anzahl Transaktionen</p>
+                        <p class="text-2xl font-bold text-gray-900 dark:text-white" id="transaction-count">0</p>
+                    </div>
+                    <div class="stats-icon bg-blue-100 dark:bg-blue-900">
+                        <i class="fas fa-receipt text-blue-600 dark:text-blue-400"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="stats-card">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">Durchschnitt pro Tag</p>
+                        <p class="text-2xl font-bold text-gray-900 dark:text-white" id="avg-per-day">€0.00</p>
+                    </div>
+                    <div class="stats-icon bg-green-100 dark:bg-green-900">
+                        <i class="fas fa-chart-line text-green-600 dark:text-green-400"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- Pie Chart -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-colors duration-300">
+                <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">
+                    <i class="fas fa-chart-pie mr-2"></i>Ausgaben nach Kategorie
+                </h2>
+                <div class="chart-container">
+                    <canvas id="category-pie-chart"></canvas>
+                </div>
+            </div>
+            
+            <!-- Bar Chart -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-colors duration-300">
+                <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">
+                    <i class="fas fa-chart-bar mr-2"></i>Ausgaben im Zeitverlauf
+                </h2>
+                <div class="chart-container">
+                    <canvas id="timeline-bar-chart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Expense Form -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8 transition-colors duration-300">
+            <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">
+                <i class="fas fa-plus-circle mr-2"></i>Neue Ausgabe hinzufügen
+            </h2>
+            <form id="expense-form" class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                <div>
+                    <label for="expense-description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Beschreibung</label>
+                    <input type="text" id="expense-description" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white" placeholder="z.B. Einkauf">
+                </div>
+                <div>
+                    <label for="expense-amount" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Betrag (€)</label>
+                    <input type="number" id="expense-amount" required step="0.01" min="0" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white" placeholder="0.00">
+                </div>
+                <div>
+                    <label for="expense-category" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Kategorie</label>
+                    <select id="expense-category" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white">
+                        <option value="">Wählen...</option>
+                        <option value="Lebensmittel">Lebensmittel</option>
+                        <option value="Miete">Miete</option>
+                        <option value="Freizeit">Freizeit</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Gesundheit">Gesundheit</option>
+                        <option value="Bildung">Bildung</option>
+                        <option value="Sonstiges">Sonstiges</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="expense-date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Datum</label>
+                    <input type="date" id="expense-date" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white">
+                </div>
+                <div class="flex items-end">
+                    <button type="submit" class="w-full px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                        <i class="fas fa-plus mr-2"></i>Hinzufügen
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Expenses Table -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-colors duration-300">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold text-gray-800 dark:text-white">
+                    <i class="fas fa-list mr-2"></i>Alle Ausgaben
+                </h2>
+                <button id="export-csv" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+                    <i class="fas fa-download mr-2"></i>Als CSV exportieren
+                </button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <thead class="bg-gray-50 dark:bg-gray-700">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Datum</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Beschreibung</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Kategorie</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Betrag</th>
+                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Aktionen</th>
+                        </tr>
+                    </thead>
+                    <tbody id="expenses-table-body" class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                        <!-- Table rows will be dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-gray-800 shadow-lg mt-12 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <p class="text-center text-gray-600 dark:text-gray-400">
+                © 2024 Personal Finance Dashboard | Entwickelt für Wirtschaftsinformatik-Portfolio
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Modules -->
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>
