@@ -473,17 +473,11 @@ Das Projekt kann um folgende Features erweitert werden:
 - ✅ Responsive Design
 - ✅ Accessibility (Semantic HTML)
 
-## 🤝 Beitragen
-
-Dieses Projekt ist ein Portfolio-Projekt. Feedback und Verbesserungsvorschläge sind willkommen!
 
 ## 📄 Lizenz
 
 MIT License - Frei verwendbar für Portfolio und Lernzwecke.
 
-## 👨‍💻 Autor
-
-Entwickelt als Portfolio-Projekt für Wirtschaftsinformatik-Studenten.
 
 ## 🙏 Danksagungen
 
@@ -492,5 +486,3 @@ Entwickelt als Portfolio-Projekt für Wirtschaftsinformatik-Studenten.
 - **Font Awesome** - Vector icons and social logos
 
 ---
-
-**Viel Erfolg mit dem Personal Finance Dashboard! 💰📊**
