@@ -35,7 +35,7 @@ Das Personal Finance Dashboard ist eine Single-Page-Application (SPA), die es Be
 
 ### Kernfunktionen
 
-- ✅ **Kategorisierte Ausgaben**: Verwaltung von Ausgaben in sieben Kategorien
+- **Kategorisierte Ausgaben**: Verwaltung von Ausgaben in sieben Kategorien
   - Lebensmittel
   - Miete
   - Freizeit
@@ -44,7 +44,7 @@ Das Personal Finance Dashboard ist eine Single-Page-Application (SPA), die es Be
   - Bildung
   - Sonstiges
 
-- ✅ **Flexible Zeitraum-Filter**
+- **Flexible Zeitraum-Filter**
   - Aktueller Monat
   - Letzter Monat
   - Aktuelles Quartal
@@ -52,17 +52,17 @@ Das Personal Finance Dashboard ist eine Single-Page-Application (SPA), die es Be
   - Aktuelles Jahr
   - Benutzerdefinierter Zeitraum
 
-- ✅ **Interaktive Datenvisualisierung**
+- **Interaktive Datenvisualisierung**
   - Kreisdiagramm für Kategorieverteilung
   - Balkendiagramm für zeitlichen Verlauf
   - Powered by Chart.js
 
-- ✅ **Datenverwaltung**
+- **Datenverwaltung**
   - Laden von JSON-Daten (lokal oder via REST-API)
   - Automatisches Speichern in LocalStorage
   - CSV-Export für externe Analysen
 
-- ✅ **Benutzerfreundlichkeit**
+- **Benutzerfreundlichkeit**
   - Einfaches Eingabeformular für neue Ausgaben
   - Sofortige Aktualisierung aller Ansichten
   - Löschen einzelner Ausgaben
@@ -70,22 +70,20 @@ Das Personal Finance Dashboard ist eine Single-Page-Application (SPA), die es Be
 
 ### Erweiterte Features
 
-- ✅ **Dark Mode**: Umschalten zwischen hellem und dunklem Design
-- ✅ **Responsive Design**: Optimiert für Desktop, Tablet und Smartphone
-- ✅ **LocalStorage-Integration**: Persistente Datenspeicherung im Browser
-- ✅ **Statistiken**: Gesamtausgaben, Transaktionsanzahl, Durchschnitt pro Tag
+- **Dark Mode**: Umschalten zwischen hellem und dunklem Design
+- **Responsive Design**: Optimiert für Desktop, Tablet und Smartphone
+- **LocalStorage-Integration**: Persistente Datenspeicherung im Browser
+- **Statistiken**: Gesamtausgaben, Transaktionsanzahl, Durchschnitt pro Tag
 
 ## 🛠 Tech-Stack
 
 ### Frontend
 
-| Technologie | Verwendung | Warum? |
-|------------|------------|--------|
-| **HTML5** | Semantische Struktur | Standard, zugänglich, SEO-freundlich |
-| **Tailwind CSS** | Styling & Layout | Utility-First, schnell, anpassbar |
-| **Vanilla JavaScript (ES6+)** | Geschäftslogik | Native Features, keine Framework-Abhängigkeiten |
-| **Chart.js** | Datenvisualisierung | Einfach, performant, gut dokumentiert |
-| **Font Awesome** | Icons | Umfangreiche Icon-Bibliothek |
+- HTML5
+- Tailwind CSS
+- Vanilla JavaScript (ES6+)
+- Chart.js
+- Font Awesome
 
 ### Architektur-Prinzipien
 
@@ -218,30 +216,11 @@ Personal-Finance-Dashboard/
 - Filter-Logik
 - Berechnungen und Statistiken
 
-**Wichtige Methoden:**
-```javascript
-state.init(expenses)              // Initialisierung
-state.addExpense(expense)         // Ausgabe hinzufügen
-state.deleteExpense(id)           // Ausgabe löschen
-state.updateFilter(filter)        // Filter aktualisieren
-state.getFilteredExpenses()       // Gefilterte Daten abrufen
-state.getStatistics()             // Statistiken berechnen
-```
-
 #### 3. **api.js** - Data Layer
 - JSON Import/Export
 - LocalStorage-Integration
 - CSV-Export
 - REST-API Support
-
-**Wichtige Methoden:**
-```javascript
-loadExpensesFromJSON(url)         // JSON laden
-exportToCSV(expenses)             // CSV generieren
-downloadFile(content, filename)   // Download triggern
-saveToLocalStorage(expenses)      // Daten speichern
-loadFromLocalStorage()            // Daten laden
-```
 
 #### 4. **charts.js** - Data Visualization
 - Chart.js Integration
@@ -249,38 +228,16 @@ loadFromLocalStorage()            // Daten laden
 - Data Update Logic
 - Theme-responsive Charts
 
-**Wichtige Methoden:**
-```javascript
-initCharts()                      // Charts initialisieren
-updateCharts()                    // Charts aktualisieren
-updateChartThemes()               // Theme für Charts anpassen
-```
-
 #### 5. **ui.js** - View Layer
 - DOM-Manipulation
 - Event Handling
 - UI-Updates
 - User Feedback (Toasts)
 
-**Wichtige Methoden:**
-```javascript
-initUI()                          // UI initialisieren
-updateStatistics()                // Statistiken aktualisieren
-updateExpensesTable()             // Tabelle rendern
-showToast(message, type)          // Benachrichtigung anzeigen
-```
-
 #### 6. **theme.js** - Theme Management
 - Dark/Light Mode Toggle
 - LocalStorage Persistence
 - System Preference Detection
-
-**Wichtige Methoden:**
-```javascript
-initTheme()                       // Theme initialisieren
-toggleTheme()                     // Theme wechseln
-getCurrentTheme()                 // Aktuelles Theme abrufen
-```
 
 ### Datenfluss
 
@@ -307,76 +264,6 @@ state.subscribe(() => {
 // Trigger update
 state.addExpense(newExpense); // Notifies all subscribers
 ```
-
-## 🎨 DOM-Struktur
-
-### Dashboard (index.html)
-
-```html
-<body>
-  <nav>                          <!-- Navigation -->
-    - Logo & Title
-    - Page Links (Dashboard, Info)
-    - Theme Toggle
-  </nav>
-  
-  <main>
-    <header>                     <!-- Page Header -->
-    
-    <section id="filters">       <!-- Time Period Filters -->
-      - Period Select
-      - Custom Date Range
-      - Apply Button
-    </section>
-    
-    <section id="statistics">    <!-- Statistics Cards -->
-      - Total Expenses
-      - Transaction Count
-      - Average per Day
-    </section>
-    
-    <section id="charts">        <!-- Data Visualization -->
-      - Pie Chart (Categories)
-      - Bar Chart (Timeline)
-    </section>
-    
-    <section id="form">          <!-- Add Expense Form -->
-      - Description Input
-      - Amount Input
-      - Category Select
-      - Date Input
-      - Submit Button
-    </section>
-    
-    <section id="table">         <!-- Expenses Table -->
-      - Table Headers
-      - Dynamic Rows
-      - Delete Buttons
-      - Export Button
-    </section>
-  </main>
-  
-  <footer>                       <!-- Footer -->
-</body>
-```
-
-### Wichtige IDs & Klassen
-
-| Element | ID/Class | Verwendung |
-|---------|----------|------------|
-| Zeitraum-Select | `#period-select` | Filter-Auswahl |
-| Start-Datum | `#start-date` | Benutzerdefinierter Filter |
-| End-Datum | `#end-date` | Benutzerdefinierter Filter |
-| Filter-Button | `#apply-filter` | Filter anwenden |
-| Gesamt | `#total-expenses` | Statistik-Anzeige |
-| Anzahl | `#transaction-count` | Statistik-Anzeige |
-| Durchschnitt | `#avg-per-day` | Statistik-Anzeige |
-| Kreisdiagramm | `#category-pie-chart` | Chart Canvas |
-| Balkendiagramm | `#timeline-bar-chart` | Chart Canvas |
-| Formular | `#expense-form` | Expense Input |
-| Tabelle Body | `#expenses-table-body` | Dynamic Content |
-| Export Button | `#export-csv` | CSV Download |
-| Theme Toggle | `#theme-toggle` | Dark Mode |
 
 ## 🚀 Erweiterungen
 
@@ -438,41 +325,6 @@ Das Projekt kann um folgende Features erweitert werden:
     - Vermögensverwaltung
     - Spar-Ziele
     - Automatische Kategorisierung (ML)
-
-## 📝 Verwendete Konzepte
-
-### JavaScript Konzepte
-
-- ✅ ES6 Modules
-- ✅ Classes
-- ✅ Arrow Functions
-- ✅ Template Literals
-- ✅ Destructuring
-- ✅ Spread Operator
-- ✅ Promises & Async/Await
-- ✅ Array Methods (map, filter, reduce)
-- ✅ LocalStorage API
-- ✅ Fetch API
-- ✅ Event Handling
-- ✅ DOM Manipulation
-
-### Design Patterns
-
-- ✅ Observer Pattern (State Management)
-- ✅ Module Pattern (ES6 Modules)
-- ✅ Singleton Pattern (State Instance)
-- ✅ Factory Pattern (Table Row Creation)
-
-### Best Practices
-
-- ✅ Separation of Concerns
-- ✅ DRY (Don't Repeat Yourself)
-- ✅ Clean Code
-- ✅ Kommentierte Funktionen
-- ✅ Error Handling
-- ✅ Responsive Design
-- ✅ Accessibility (Semantic HTML)
-
 
 ## 📄 Lizenz
 
